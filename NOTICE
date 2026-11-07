@@ -1,0 +1,20 @@
+# Atribuição / Attribution
+
+Este projeto é um derivado do projeto `pii-tokens`
+(https://github.com/oLucasAguilar/pii-tokens), licenciado sob MIT License,
+Copyright (c) 2026 Lucas Aguilar.
+
+O código em `plugin/scripts/`, `tests/` e `desktop/` foi reutilizado com
+modificações mínimas (reorganização e documentação para Linux/Bash).
+Os avisos de copyright e permissão da licença MIT do projeto de origem
+são preservados em `LICENSE`. As modificações próprias são registradas
+neste arquivo.
+
+Origem verificada em: 2026-11-06 (commit 1eacb11).
+Nome de trabalho do derivado: "PII Guard BR" (provisório).
+
+Modificações registradas nesta missão:
+- Adição de documentação de ambiente Linux/Bash (`docs/`).
+- Adição de `.env.example` com placeholders.
+- Adição de configuração de teste reproduzível (Makefile, PYTHON_KEYRING_BACKEND).
+- Nenhuma alteração na lógica de mascaramento foi feita nesta etapa.
