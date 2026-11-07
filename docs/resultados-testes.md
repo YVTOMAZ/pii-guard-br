@@ -1,6 +1,6 @@
 # Resultados de testes (derivado Contextuva)
 
-Data/hora (BRT): 2026-11-07 14:01:02 -03 (execução registrada nesta rodada).
+Data/hora (BRT): 2026-11-07 18:04:26 -03 (execução registrada nesta rodada).
 
 ## Ambiente
 
@@ -11,7 +11,7 @@ Data/hora (BRT): 2026-11-07 14:01:02 -03 (execução registrada nesta rodada).
 - Pillow: 12.3.0
 - tesseract: 5.3.4 (leptonica 1.82.0)
 - cryptography: 50.0.2; openpyxl: 3.1.5
-- Sistema: Linux (sem remote configurado; branch `docs/config-real`)
+- Sistema: Linux (branch `main`, HEAD `00eb994`)
 
 ## Comando executado
 
@@ -26,52 +26,52 @@ PYTHON_KEYRING_BACKEND=keyrings.alt.file.PlaintextKeyring .venv/bin/python tests
 PYTHON_KEYRING_BACKEND=keyrings.alt.file.PlaintextKeyring .venv/bin/python tests/test_desktop.py
 ```
 
-Log completo: `/tmp/pii-guard-br-test.log` (cópia em `/tmp/opencode/pii-guard-br-test.log`).
+Log completo: `cronjob/estado/evidencias-github_manutencao-contextuva-16-testes-falhando_2026-11-07/make_test_depois_1.log`
+e `.../make_test_depois_2.log`.
 
 ## Resultado
 
-- Saída: `254` casos `ok`, `16` casos `FAIL`, `failures: 16`.
-- Código de saída: `2` (`make: *** [Makefile:6: test] Erro 1`).
+- Execução 1: `355` casos `ok`, `0` casos `FAIL`, código de saída `0`.
+- Execução 2: `355` casos `ok`, `0` casos `FAIL`, código de saída `0`.
 
-## Falhas registradas (sem correção de código nesta missão)
+## Causa das 16 falhas anteriores (todas corrigidas)
 
-1. `pii-check: through the hook, the command output reaches Claude as tokens`
-2. `pii-check: through the hook, the file it wrote reaches Claude as tokens`
-3. `pii-check: with a working keyring, no warning about irreversible tokens`
-4. `pii-exec: a formatted CPF searched by digits finds nothing, and says to use .fmt`
-5. `pii-exec: TOKEN.fmt finds the formatted CPF, with no hint`
-6. `pii-exec: a CPF written as digits is found, with no hint`
-7. `pii-exec: CNPJ.fmt finds the formatted CNPJ`
-8. `pii-exec --stdin: TOKEN.fmt is given back formatted`
-9. `allowed email passes the prompt`
-10. `allowed value is not masked in tool output`
-11. `writing a live token into a repository file asks first`
-12. `an Edit with a live token asks too`
-13. `a commit message with a live token asks first`
-14. `pii-scrub keeps the value reversible`
-15. `Read of an image: the note names the token`
-16. `Read of an image: the token is reversible`
+As 16 falhas eram de ambiente/teste: os testes disparavam subprocessos com o
+executável fixo `python3` (Python do sistema, sem `keyring`/dependências), em
+vez do mesmo interpretador que roda a suíte (`.venv/bin/python`). Com
+`keyring` indisponível, `Vault.token_for` devolvia `CPF#????????` e as
+asserções falhavam. Correção: usar `sys.executable` nas chamadas
+`subprocess.run` de `tests/test_pii.py` (12 ocorrências). Nenhum código de
+produção foi alterado.
 
-As falhas acima são registradas como ocorreram. Correção de código fica como
-tarefa separada; esta missão é restrita a documentação/configuração.
+| # | Teste | Causa | Evidência |
+|---|---|---|---|
+| 1 | pii-check: through the hook, command output reaches Claude as tokens | (a) ambiente/teste | log antes: `CPF#????????`; após: `CPF#[0-9a-f]{12}` |
+| 2 | pii-check: through the hook, file written reaches Claude as tokens | (a) ambiente/teste | idem |
+| 3 | pii-check: with a working keyring, no warning about irreversible tokens | (a) ambiente/teste | `Warning` sumiu com `.venv` |
+| 4 | pii-exec: formatted CPF searched by digits finds nothing, says .fmt | (a) ambiente/teste | dependência de `keyring` no subprocesso |
+| 5 | pii-exec: TOKEN.fmt finds formatted CPF, no hint | (a) ambiente/teste | idem |
+| 6 | pii-exec: CPF written as digits found, no hint | (a) ambiente/teste | idem |
+| 7 | pii-exec: CNPJ.fmt finds formatted CNPJ | (a) ambiente/teste | idem |
+| 8 | pii-exec --stdin: TOKEN.fmt given back formatted | (a) ambiente/teste | idem |
+| 9 | allowed email passes the prompt | (a) ambiente/teste | `pii-allow` rodava em Python sem deps |
+| 10 | allowed value is not masked in tool output | (a) ambiente/teste | idem |
+| 11 | writing a live token into a repository file asks first | (a) ambiente/teste | `pre` rodava em Python sem deps |
+| 12 | an Edit with a live token asks too | (a) ambiente/teste | idem |
+| 13 | a commit message with a live token asks first | (a) ambiente/teste | idem |
+| 14 | pii-scrub keeps the value reversible | (a) ambiente/teste | subprocesso `pii-scrub` sem deps |
+| 15 | Read of an image: the note names the token | (a) ambiente/teste | hook subprocesso sem deps |
+| 16 | Read of an image: the token is reversible | (a) ambiente/teste | idem |
+
+## Comparação com upstream
+
+Suíte equivalente em `referencias/pii-tokens` (somente leitura) executada com
+as mesmas versões: `270` casos `ok` em `test_pii.py` e `85` em
+`test_desktop.py`, `0` falhas. Logs:
+`cronjob/estado/evidencias-github_manutencao-contextuva-16-testes-falhando_2026-11-07/upstream_test_pii.log`
+e `.../upstream_test_desktop.log`.
 
 ## Regressão da sobrescrita (dados sintéticos, diretórios temporários)
 
-```bash
-TMP=$(mktemp -d)
-XDG_CONFIG_HOME="$TMP/cfg" \
-CLAUDE_PLUGIN_OPTION_DATA_DIR="$TMP/data" \
-CLAUDE_PLUGIN_OPTION_ALLOWED_EMAIL_DOMAINS='empresa.example,outra.example' \
-.venv/bin/python -c 'import sys; sys.path.insert(0,"plugin/scripts"); import pii; print(pii.DATA_DIR); print(pii.ALLOWED_EMAIL_DOMAINS)'
-rm -rf "$TMP"
-```
-
-Resultado: `DATA_DIR` dentro de `$TMP/data`; domínios `empresa.example` e
-`outra.example` presentes em `ALLOWED_EMAIL_DOMAINS` (além dos embutidos).
-Import de `pii` não criou diretórios nem acessou keyring. Código de saída: 0.
-
-## Observação
-
-O suíte completo não foi mascarado nem alterado. Falhas acima devem ser
-investigadas em tarefa própria (provavelmente dependem de ambiente/chave/git).
-Nenhuma alteração em código Python foi feita nesta missão.
+Mantida a verificação documentada anteriormente; `make test` verde duas vezes
+seguidas sem remoção de casos.

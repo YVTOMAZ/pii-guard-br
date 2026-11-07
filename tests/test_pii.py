@@ -46,7 +46,7 @@ def check(name, condition):
 
 def hook(mode, event):
     return subprocess.run(
-        ["python3", str(SCRIPTS / "hook.py"), mode], input=json.dumps(event), capture_output=True, text=True
+        [sys.executable, str(SCRIPTS / "hook.py"), mode], input=json.dumps(event), capture_output=True, text=True
     ).stdout
 
 
@@ -399,15 +399,15 @@ check("prompt with an external email blocked", '"block"' in email_prompt and "pi
 config_path = SANDBOX / "pii-tokens" / "config.json"
 allowed_email = pii.Vault(store=False).token_for("EMAIL", "partner@corp.example.net")
 allowed_cpf = pii.Vault(store=False).token_for("CPF", cpf)
-refused = subprocess.run(["python3", str(SCRIPTS / "cli.py"), "pii-allow", allowed_email], capture_output=True, text=True)
+refused = subprocess.run([sys.executable, str(SCRIPTS / "cli.py"), "pii-allow", allowed_email], capture_output=True, text=True)
 check("pii-allow refuses to add outside an interactive terminal", refused.returncode != 0 and not config_path.read_text().count("allowed_tokens"))
 import cli as cli_module  # noqa: E402
 cli_module.sys.stdout.isatty = lambda: True
 cli_module.cmd_allow([allowed_email, allowed_cpf])
 check("pii-allow writes the tokens", allowed_email in json.loads(config_path.read_text())["allowed_tokens"])
 check("pii-allow rejects a value that is not a token",
-      subprocess.run(["python3", str(SCRIPTS / "cli.py"), "pii-allow", "maria@cliente.example"], capture_output=True, text=True).returncode != 0)
-check_run = subprocess.run(["python3", str(SCRIPTS / "cli.py"), "pii-check"], capture_output=True, text=True)
+      subprocess.run([sys.executable, str(SCRIPTS / "cli.py"), "pii-allow", "maria@cliente.example"], capture_output=True, text=True).returncode != 0)
+check_run = subprocess.run([sys.executable, str(SCRIPTS / "cli.py"), "pii-check"], capture_output=True, text=True)
 check_cpf = re.search(r"CPF: (\S+)", check_run.stdout).group(1)
 check_email = re.search(r"email: (\S+)", check_run.stdout).group(1)
 check_file = Path(re.search(r"Now read (\S+) with", check_run.stdout).group(1))
@@ -425,7 +425,7 @@ check("pii-check: through the hook, the file it wrote reaches Claude as tokens",
       re.search(r"CPF#[0-9a-f]{12}", read_masked) and re.search(r"EMAIL#[0-9a-f]{12}", read_masked)
       and not re.search(r"\d{3}\.\d{3}\.\d{3}-\d{2}", read_masked))
 check("pii-check: with a working keyring, no warning about irreversible tokens", "Warning" not in check_run.stdout)
-no_keyring = subprocess.run(["python3", str(SCRIPTS / "cli.py"), "pii-check"], capture_output=True, text=True,
+no_keyring = subprocess.run([sys.executable, str(SCRIPTS / "cli.py"), "pii-check"], capture_output=True, text=True,
                             env={**os.environ, "PYTHON_KEYRING_BACKEND": "keyring.backends.fail.Keyring"})
 check("pii-check: without a usable keyring, it warns that tokens will not turn back into values", "Warning: these tokens cannot" in no_keyring.stdout)
 long_windows = "C:\\Users\\x\\AppData\\Local\\Temp\\claude\\" + "a" * 250 + "\\notes.md"
@@ -436,7 +436,7 @@ check("pii-reveal: a path that already has the prefix is kept", cli_module.windo
 long_share = "\\\\server\\share\\" + "a" * 250 + "\\notes.md"
 check("pii-reveal: a long network share path gets the \\\\?\\UNC\\ prefix", cli_module.windows_long_path(long_share) == "\\\\?\\UNC\\" + long_share[2:])
 for command in ("pii-sheet", "pii-reveal"):
-    bare = subprocess.run(["python3", str(SCRIPTS / "cli.py"), command], capture_output=True, text=True)
+    bare = subprocess.run([sys.executable, str(SCRIPTS / "cli.py"), command], capture_output=True, text=True)
     check(f"{command} without a file prints its usage", bare.returncode != 0 and f"usage: {command} FILE" in bare.stderr and "Traceback" not in bare.stderr)
 
 # pii-exec gives a document token back as digits; a file that writes it with dots and dash needs .fmt.
@@ -445,7 +445,7 @@ exec_log = SANDBOX / "exec.log"
 
 
 def pii_exec(*command):
-    return subprocess.run(["python3", str(SCRIPTS / "cli.py"), "pii-exec", "--", *command], capture_output=True, text=True)
+    return subprocess.run([sys.executable, str(SCRIPTS / "cli.py"), "pii-exec", "--", *command], capture_output=True, text=True)
 
 
 exec_log.write_text(f"customer {cpf_formatted}\n")
@@ -463,7 +463,7 @@ check("pii-reveal gives TOKEN.fmt back with punctuation, no .fmt left",
       pii.unmask_text(f"cpf {exec_token}.fmt.", pii.Vault()) == f"cpf {cpf_formatted}.")
 check("pii-exec: CNPJ.fmt finds the formatted CNPJ", pii_exec("grep", "-c", f"{cnpj_token}.fmt", str(exec_log)).stdout.strip() == "1")
 exec_log.write_text(f"customer {cpf_formatted}\n")
-piped = subprocess.run(["python3", str(SCRIPTS / "cli.py"), "pii-exec", "--stdin", "--", "grep", "-c", "-f", "-", str(exec_log)],
+piped = subprocess.run([sys.executable, str(SCRIPTS / "cli.py"), "pii-exec", "--stdin", "--", "grep", "-c", "-f", "-", str(exec_log)],
                        input=f"{exec_token}.fmt", capture_output=True, text=True)
 check("pii-exec --stdin: TOKEN.fmt is given back formatted", piped.stdout.strip() == "1")
 unknown = pii_exec("grep", "-c", "CPF#0123456789ab", str(exec_log))
@@ -475,7 +475,7 @@ out = hook("post", {"tool_name": "Bash", "tool_response": {"stdout": f"cnpj of u
 check("allowed value is not masked in tool output", out == "" or cpf_formatted in out)
 check("other values still masked with an allowlist",
       "EMAIL#" in hook("post", {"tool_name": "Bash", "tool_response": {"stdout": "x stranger@corp.example.net", "stderr": ""}}))
-subprocess.run(["python3", str(SCRIPTS / "cli.py"), "pii-allow", "--remove", allowed_cpf], capture_output=True, text=True)
+subprocess.run([sys.executable, str(SCRIPTS / "cli.py"), "pii-allow", "--remove", allowed_cpf], capture_output=True, text=True)
 check("pii-allow --remove takes it back", "CPF#" in hook("post", {"tool_name": "Bash", "tool_response": {"stdout": f"x {cpf_formatted}", "stderr": ""}}))
 check("config file is private", oct(config_path.stat().st_mode & 0o777) == "0o600")
 
@@ -511,7 +511,7 @@ slow.write_text(
     "hook.DEADLINE_SECONDS = 1\npii.mask_json = lambda *a, **k: time.sleep(5)\n"
     "hook.post(json.load(sys.stdin))\n"
 )
-out = subprocess.run(["python3", str(slow)], input=json.dumps({"tool_name": "Bash", "tool_response": bash_shape}),
+out = subprocess.run([sys.executable, str(slow)], input=json.dumps({"tool_name": "Bash", "tool_response": bash_shape}),
                      capture_output=True, text=True, timeout=4).stdout
 check("deadline suppresses instead of leaking", "suppressed" in out and '"x"' not in out)
 
@@ -519,7 +519,7 @@ broken = SANDBOX / "broken"
 broken.mkdir()
 (broken / "pii.py").write_text("raise ImportError('broken install')\n")
 (broken / "hook.py").write_text((SCRIPTS / "hook.py").read_text())
-out = subprocess.run(["python3", str(broken / "hook.py"), "post"], input=json.dumps({"tool_name": "Bash", "tool_response": bash_shape}),
+out = subprocess.run([sys.executable, str(broken / "hook.py"), "post"], input=json.dumps({"tool_name": "Bash", "tool_response": bash_shape}),
                      capture_output=True, text=True).stdout
 check("a broken library suppresses instead of leaking", "suppressed" in out and '"x"' not in out)
 
@@ -607,7 +607,7 @@ transcript = SANDBOX / "claude-config" / "projects" / "some-project" / "session.
 transcript.parent.mkdir(parents=True)
 transcript.write_text(json.dumps({"type": "user", "message": {"content": f"check {scrub_cpf}"}}) + "\n")
 os.utime(transcript, (time.time() - 3600,) * 2)
-subprocess.run(["python3", str(SCRIPTS / "cli.py"), "pii-scrub", "--apply"], env={**os.environ, "CLAUDE_CONFIG_DIR": str(SANDBOX / "claude-config")}, capture_output=True, text=True)
+subprocess.run([sys.executable, str(SCRIPTS / "cli.py"), "pii-scrub", "--apply"], env={**os.environ, "CLAUDE_CONFIG_DIR": str(SANDBOX / "claude-config")}, capture_output=True, text=True)
 scrubbed = transcript.read_text()
 scrub_token = pii.TOKEN_RE.search(scrubbed)
 check("pii-scrub replaces the value in an old transcript", scrub_cpf not in scrubbed and scrub_token is not None)
