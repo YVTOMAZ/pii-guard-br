@@ -11,8 +11,9 @@ Reaproveita o escopo central da base (mascaramento reversível de CPF, CNPJ,
 email, telefone, nomes em tabelas, termos) sem adicionar provedores, interface
 web, OCR próprio ou suporte universal.
 
-Não afirma superioridade sobre a base. Comparação base/derivado com os mesmos
-casos e ambiente está registrada em `docs/` e nos resultados de testes.
+Não afirma superioridade sobre a base. Comparação base/derivado não está incluída
+nesta entrega; fica como tarefa própria. Resultados da suíte local do derivado:
+ver `docs/resultados-testes.md`.
 
 ## Instalação (Linux)
 
@@ -27,9 +28,20 @@ make test
 
 ## Uso
 
-Herda comandos da base (`pii-check`, `pii-mask`, `pii-unmask`, `pii-exec`,
-`pii-reveal`, `pii-scrub`, `pii-selfcheck`). Ver documentação da base em
-`docs/usage.md` (não incluído; consultar origem).
+Comandos disponíveis em `plugin/bin/`:
+
+- `pii-allow`
+- `pii-check`
+- `pii-exec`
+- `pii-mask`
+- `pii-reveal`
+- `pii-scrub`
+- `pii-selfcheck`
+- `pii-sheet`
+- `pii-unmask`
+
+Ver também `docs/uso.md` (resumo curto) e documentação da base em
+<https://github.com/oLucasAguilar/pii-tokens> (origem).
 
 ## Configuração
 
@@ -47,8 +59,8 @@ com LGPD.
 make test
 ```
 
-Dados exclusivamente sintéticos. Resultados: base e derivado executados com as
-mesmas dependências (`keyrings.alt`, tesseract instalado).
+Dados exclusivamente sintéticos. Resultado da última execução local do derivado:
+ver `docs/resultados-testes.md`.
 
 ## Origem e licença
 

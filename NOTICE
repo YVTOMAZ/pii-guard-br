@@ -18,3 +18,13 @@ Modificações registradas nesta missão:
 - Adição de `.env.example` com placeholders.
 - Adição de configuração de teste reproduzível (Makefile, PYTHON_KEYRING_BACKEND).
 - Nenhuma alteração na lógica de mascaramento foi feita nesta etapa.
+
+Modificações registradas nesta missão (config-docs, 2026-11-07):
+- `.env.example` alinhado às variáveis realmente lidas pelo código
+  (`CLAUDE_PLUGIN_OPTION_*`, `XDG_CONFIG_HOME`, `PII_SELFCHECK_MODEL`,
+  `PYTHON_KEYRING_BACKEND`); removidas as três variáveis `PII_*` legadas
+  (cofre, keyring, domínios de email).
+- README: removida afirmação de resultados não comprovados; listados os
+  nove comandos de `plugin/bin/`; referência a `docs/uso.md`.
+- Adição de `docs/uso.md` e `docs/resultados-testes.md`.
+- Nenhuma alteração na lógica de mascaramento, tokens, cofre ou hooks.
