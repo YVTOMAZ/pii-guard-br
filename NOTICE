@@ -41,3 +41,8 @@ Modificações registradas nesta missão (renomeacao-contextuva, 2026-11-07):
   preservados; nenhuma alteração de lógica, tokens, hooks ou persistência.
 - Etapa B (pseudônimos opt-in por projeto) planejada separadamente, não
   implementada nesta etapa.
+
+Alterações adicionais do derivado Contextuva (2026-11-07):
+- Prefixos dos avisos de hooks, CLI, keyring e instalação atualizados para Contextuva.
+- Contratos de hooks, comandos e persistência legada preservados.
+- Testes de regressão de mensagens incluídos no alvo make test.

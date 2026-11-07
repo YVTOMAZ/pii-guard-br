@@ -23,7 +23,7 @@ AT_MENTION = re.compile(r"(?:^|(?<=\s))@(\"[^\"]+\"|\S+)")
 AT_MENTION_MAX_BYTES = 5_000_000
 BLANK_PNG = "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAADElEQVR4nGP4//8/AAX+Av4N70a4AAAAAElFTkSuQmCC"
 IMAGE_UNCHECKED = (
-    "[pii-tokens] This image was not checked for personal data: install tesseract (and Pillow in the plugin venv) "
+    "[Contextuva] This image was not checked for personal data: install tesseract (and Pillow in the plugin venv) "
     "to have CPF, CNPJ, e-mail and phone in images replaced by tokens."
 )
 
@@ -92,10 +92,10 @@ def _mask_images(image, response, vault, source_path: str = ""):
         masked, labels = image.mask_images(response, vault, source)
     except Exception as e:
         # The output must keep the image shape, or Claude Code falls back to the original.
-        return image.blank_images(response, BLANK_PNG), f"[pii-tokens] image withheld: masking failed ({type(e).__name__}: {e})"
+        return image.blank_images(response, BLANK_PNG), f"[Contextuva] image withheld: masking failed ({type(e).__name__}: {e})"
     if not labels:
         return masked, None
-    return masked, "[pii-tokens] Personal data in this image was replaced by tokens (OCR, best effort): " + ", ".join(
+    return masked, "[Contextuva] Personal data in this image was replaced by tokens (OCR, best effort): " + ", ".join(
         dict.fromkeys(labels)
     )
 
@@ -124,7 +124,7 @@ def post(event: dict) -> None:
         if with_images:
             masked = image.restore_images(masked, response_images)
     except Exception as e:
-        masked = _suppress(response, f"[pii-tokens] output suppressed: masking failed ({type(e).__name__}: {e})")
+        masked = _suppress(response, f"[Contextuva] output suppressed: masking failed ({type(e).__name__}: {e})")
         if with_images:
             masked = image.blank_images(masked, BLANK_PNG)
     if masked == response and not note:
@@ -225,7 +225,7 @@ def prompt(event: dict) -> None:
         emit({
             "decision": "block",
             "reason": (
-                f"[pii-tokens] Prompt blocked: {', '.join(mentioned)} contains personal data, and a file "
+                f"[Contextuva] Prompt blocked: {', '.join(mentioned)} contains personal data, and a file "
                 "mentioned with @ enters the context without passing through masking. Write the path "
                 f"without the @ and ask for it to be read. To send anyway, include `{PROMPT_ESCAPE}`."
             ),
@@ -234,7 +234,7 @@ def prompt(event: dict) -> None:
     images, unchecked = _pasted_images_to_block(event)
     if any(path.endswith(".missing") for path in images):
         emit({"decision": "block", "reason": (
-            "[pii-tokens] Prompt blocked: the pasted image could not be found to be checked for personal data. "
+            "[Contextuva] Prompt blocked: the pasted image could not be found to be checked for personal data. "
             f"Save it to a file and ask Claude to read the file, or include `{PROMPT_ESCAPE}` to send it anyway."
         )})
         return
@@ -246,7 +246,7 @@ def prompt(event: dict) -> None:
         emit({
             "decision": "block",
             "reason": (
-                "[pii-tokens] Prompt blocked: a pasted image holds personal data (or could not be checked in time), "
+                "[Contextuva] Prompt blocked: a pasted image holds personal data (or could not be checked in time), "
                 "and a pasted image reaches "
                 "Claude as it is; reading the file instead replaces the data with tokens. "
                 + ("The message below is in your clipboard: clear the prompt, paste it and send.\n\n"
@@ -268,7 +268,7 @@ def prompt(event: dict) -> None:
         emit({
             "decision": "block",
             "reason": (
-                f"[pii-tokens] Prompt blocked: it contains personal data ({', '.join(blocked)}). Put the text "
+                f"[Contextuva] Prompt blocked: it contains personal data ({', '.join(blocked)}). Put the text "
                 "in a file and pass the path (reading it masks the data). If a value is fine to send, allow it "
                 f"once and for all by running, in your own terminal, `pii-allow {' '.join(blocked)}`. To send this prompt anyway, include "
                 f"`{PROMPT_ESCAPE}`."
@@ -304,7 +304,7 @@ def _asks_for_real_values(command: str) -> bool:
         "hookEventName": "PreToolUse",
         "permissionDecision": "ask",
         "permissionDecisionReason": (
-            "[pii-tokens] pii-exec runs this command with the real values in place of the tokens. "
+            "[Contextuva] pii-exec runs this command with the real values in place of the tokens. "
             "Approve only if you know where the command sends them (a network command would send the "
             "personal data out). This also asks in auto mode."
         ),
@@ -336,7 +336,7 @@ def pre(event: dict) -> None:
             "hookEventName": "PreToolUse",
             "permissionDecision": "ask",
             "permissionDecisionReason": (
-                f"[pii-tokens] This writes masked token(s) {', '.join(live)} into {target}. A token stands for real "
+                f"[Contextuva] This writes masked token(s) {', '.join(live)} into {target}. A token stands for real "
                 "personal data and is not the value itself. Approve only if the token text is what you want there."
             ),
         }})

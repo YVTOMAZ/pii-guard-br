@@ -120,7 +120,7 @@ def cmd_exec(args):
         # A document token becomes its digits; a file that writes it with dots and dash would not match,
         # and an empty answer would read as "not there".
         for token in _digits_only_tokens(args + ([raw_stdin] if raw_stdin else []), vault):
-            sys.stderr.write(f"[pii-tokens] {token} became its digits only. If nothing matched and the "
+            sys.stderr.write(f"[Contextuva] {token} became its digits only. If nothing matched and the "
                              f"file writes it with punctuation, use {token}.fmt\n")
     sys.exit(result.returncode)
 

@@ -1,5 +1,8 @@
 # Resultados de testes (derivado Contextuva)
 
+Os hashes abaixo identificam bases e execuções datadas. Não são uma referência
+dinâmica ao HEAD atual, que deve ser consultado pelo Git.
+
 Data/hora (BRT): 2026-11-07 18:04:26 -03 (execução registrada nesta rodada).
 
 ## Ambiente
@@ -76,3 +79,33 @@ e `.../upstream_test_desktop.log`.
 
 Mantida a verificação documentada anteriormente; `make test` verde duas vezes
 seguidas sem remoção de casos.
+
+## Verificação dos avisos Contextuva em 2026-11-07T19:48:16-03:00
+
+A intervenção atual altera somente o prefixo público `[pii-tokens]` para
+`[Contextuva]` em avisos. Caminhos, keyring, comandos `pii-*`, `pii-ok`, campos
+JSON de hooks e códigos de saída foram preservados.
+
+Ambiente: mesma venv descrita acima, também no início do PATH para que os
+subprocessos `python3` usem as mesmas dependências; XDG_DATA_HOME, XDG_CACHE_HOME
+e CLAUDE_CONFIG_DIR apontando para diretórios temporários sintéticos. A execução
+completa ocorreu fora do sandbox de rede; não foram acessados cofres reais.
+
+Comando principal, na raiz de cada cópia isolada:
+
+```sh
+PATH="$PWD/.venv/bin:$PATH" make test PYTHON=.venv/bin/python
+```
+
+Nesta verificação, a venv existente foi referenciada por caminho absoluto nas
+cópias temporárias. Os registros de execução ficam em
+`cronjob/estado/evidencias-marca-contextuva-20261107/` da fila local.
+
+- Linha de base do commit `66ec471fef63f6badb217884f13ae84b79020634`: 355 casos OK, zero FAIL, código 0.
+- Após os avisos: os mesmos 355 casos OK, zero FAIL, código 0, mais 5 testes unitários de marca aprovados.
+- Os testes novos verificam aviso de OCR, bloqueio de arquivo, confirmação de pii-exec, aviso de keyring e dica .fmt da CLI.
+
+Os registros antigos de 254 OK e 16 FAIL permanecem no histórico da fila;
+a correção de subprocessos por outra missão e os resultados verdes atuais foram
+preservados acima. Nenhuma correção funcional de pseudonimização, migração de
+dados ou etapa B foi incluída nesta mudança de avisos.

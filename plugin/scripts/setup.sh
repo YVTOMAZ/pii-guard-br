@@ -35,6 +35,6 @@ usual() { "$python" -m venv "$data/venv" && "$("$root/scripts/find_python.sh" "$
 if [ -n "$python" ] && { fast || usual; } >/dev/null 2>&1; then
   cp "$root/requirements.txt" "$data/requirements.txt"
 else
-  echo "[pii-tokens] could not install keyring/cryptography into $data/venv; masking still runs, but tokens cannot be reversed. Needs Python 3.10+ with venv." >&2
+  echo "[Contextuva] could not install keyring/cryptography into $data/venv; masking still runs, but tokens cannot be reversed. Needs Python 3.10+ with venv." >&2
 fi
 exit 0

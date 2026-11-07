@@ -33,3 +33,10 @@ Variáveis `CLAUDE_PLUGIN_OPTION_<CHAVE>` sobrescrevem o arquivo.
 - `python3 tests/test_pii.py` exerce mascaramento, reversão autorizada,
   entradas inválidas e inspeção de saídas/erros.
 - Casos não cobertos: ver `docs/limites.md`.
+
+## Marca dos avisos
+
+Os avisos visíveis de hooks, CLI e instalação usam o prefixo `[Contextuva]`.
+Os comandos `pii-*`, o escape `pii-ok`, os eventos e campos de hooks, os caminhos
+legados de configuração/cofre e o serviço de keyring `pii-tokens` permanecem
+compatíveis; a mudança de marca não migra nem recria dados.

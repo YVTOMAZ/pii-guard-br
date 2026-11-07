@@ -248,7 +248,7 @@ class Vault:
         try:
             self._load_keys()
         except Exception as e:
-            print(f"[pii-tokens] keyring unavailable, tokens cannot be reversed: {e}", file=sys.stderr)
+            print(f"[Contextuva] keyring unavailable, tokens cannot be reversed: {e}", file=sys.stderr)
 
     def _load_keys(self):
         import keyring
