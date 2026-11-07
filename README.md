@@ -1,4 +1,4 @@
-# PII Guard BR (nome de trabalho, provisório)
+# Contextuva (nome de trabalho, provisório; slug ASCII `contextuva`)
 
 Derivado atribuído de [pii-tokens](https://github.com/oLucasAguilar/pii-tokens)
 (MIT, Copyright (c) 2026 Lucas Aguilar). Preserva avisos MIT e autoria.

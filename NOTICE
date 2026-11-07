@@ -11,7 +11,12 @@ são preservados em `LICENSE`. As modificações próprias são registradas
 neste arquivo.
 
 Origem verificada em: 2026-11-06 (commit 1eacb11).
-Nome de trabalho do derivado: "PII Guard BR" (provisório).
+Nome de trabalho do derivado: "Contextuva" (provisório; slug ASCII `contextuva`).
+Renomeação de marca nesta missão (renomeacao-contextuva, 2026-11-07):
+identificadores de persistência, cofre, keyring, cache e contratos Claude
+(`CLAUDE_PLUGIN_OPTION_*`, `XDG_CONFIG_HOME`) permanecem com os valores
+legados documentados em `docs/configuracao.md` (compatibilidade). Repositório
+público e diretório local não foram renomeados nesta etapa.
 
 Modificações registradas nesta missão:
 - Adição de documentação de ambiente Linux/Bash (`docs/`).
@@ -28,3 +33,11 @@ Modificações registradas nesta missão (config-docs, 2026-11-07):
   nove comandos de `plugin/bin/`; referência a `docs/uso.md`.
 - Adição de `docs/uso.md` e `docs/resultados-testes.md`.
 - Nenhuma alteração na lógica de mascaramento, tokens, cofre ou hooks.
+
+Modificações registradas nesta missão (renomeacao-contextuva, 2026-11-07):
+- Marca provisória "PII Guard BR" → "Contextuva" em README, NOTICE e
+  `docs/resultados-testes.md`.
+- Caminhos, cofre, keyring, cache, contratos Claude e referências upstream
+  preservados; nenhuma alteração de lógica, tokens, hooks ou persistência.
+- Etapa B (pseudônimos opt-in por projeto) planejada separadamente, não
+  implementada nesta etapa.

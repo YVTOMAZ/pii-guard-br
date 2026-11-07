@@ -1,4 +1,4 @@
-# Resultados de testes (derivado PII Guard BR)
+# Resultados de testes (derivado Contextuva)
 
 Data/hora (BRT): 2026-11-07 14:01:02 -03 (execução registrada nesta rodada).
 

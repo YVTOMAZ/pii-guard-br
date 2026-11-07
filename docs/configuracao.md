@@ -2,6 +2,14 @@
 
 Herda da base `pii-tokens`. Documenta apenas o que está implementado e verificado.
 
+## Identificadores de persistência (legados, preservados)
+
+O nome de marca do derivado mudou para "Contextuva", mas os identificadores de
+persistência e contratos permanecem com os valores legados por compatibilidade:
+`pii-tokens` em `~/.config/pii-tokens`, `~/.local/share/pii-tokens`,
+`~/.cache/pii-tokens` e no serviço de keyring. Não renomear esses caminhos
+sem migração reversível, consentimento e backup verificado.
+
 ## config.json
 
 Chaves suportadas (todas opcionais, com padrão):
