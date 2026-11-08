@@ -14,7 +14,7 @@ Data/hora (BRT): 2026-11-07 18:04:26 -03 (execução registrada nesta rodada).
 - Pillow: 12.3.0
 - tesseract: 5.3.4 (leptonica 1.82.0)
 - cryptography: 50.0.2; openpyxl: 3.1.5
-- Sistema: Linux (branch `main`; HEAD no momento da execução: `e11335f51b6d7dd3e092a6df85fbc6f970d9cf9b`)
+- Sistema: Linux (branch `main`; HEAD no momento da execução: `00eb99417bde74027ba8bfb9f3f7d3f6913dde95`)
 - Publicação: repositório público `YVTOMAZ/pii-guard-br`, branch `main` (prova de publicação: `cronjob/estado/github_manutencao-contextuva-16-testes-falhando_2026-11-07_17-56-22_BRT.md.publicacao.json`)
 
 ## Comando executado
