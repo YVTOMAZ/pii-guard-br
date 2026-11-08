@@ -1,0 +1,52 @@
+name: Testes
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Setup Python
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: plugin/requirements.txt
+
+      - name: Install tesseract
+        run: sudo apt-get update && sudo apt-get install -y tesseract-ocr
+
+      - name: Install plugin dependencies
+        run: python -m pip install --require-hashes -r plugin/requirements.txt
+
+      - name: Install test-only dependencies
+        run: python -m pip install keyrings.alt==5.0.2 fastmcp==4.1.4
+
+      - name: Run tests
+        run: |
+          set -o pipefail
+          make test PYTHON=python 2>&1 | tee test.log
+
+      - name: Check for skips and failures
+        run: |
+          if grep -Eq 'skip (image|proxy) tests' test.log; then
+            echo "::error::Forbidden test skip detected"
+            exit 1
+          fi
+          grep -q 'failures: 0' test.log

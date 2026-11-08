@@ -71,3 +71,8 @@ PYTHON_KEYRING_BACKEND=keyrings.alt.file.PlaintextKeyring python3 tests/test_des
 ```
 
 Os dados são exclusivamente sintéticos (gerados em tempo de execução).
+
+Na CI (GitHub Actions, Ubuntu), `make test` roda com `tesseract-ocr` e
+`fastmcp==4.1.4` instalados, para que os testes de imagem e de proxy não
+sejam pulados; ver `.github/workflows/tests.yml`. A dependência `fastmcp`
+é necessária para os testes de proxy (além de `keyrings.alt` e tesseract).
