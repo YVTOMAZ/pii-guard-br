@@ -138,10 +138,10 @@ de `_refuse` e o log de `without_null_text`.
   `author.name == "Lucas Aguilar"`.
 - CA9: `python3 desktop/build.py /tmp/contextuva-test.mcpb && python3 desktop/build.py --check /tmp/contextuva-test.mcpb`
   imprime `same code as this folder`.
-- Escopo: `git diff --stat origin/main` mostra apenas
+- Escopo: `git diff --stat origin/main` mostra 5 arquivos permitidos:
   `desktop/manifest.json`, `desktop/pii_proxy/server.py`, `docs/configuracao.md`,
-  `tests/test_desktop.py`. `.github/`, `README.md`, `NOTICE` e `plugin/`
-  permanecem intocados.
+  `docs/resultados-testes.md`, `tests/test_desktop.py`. `.github/`, `README.md`,
+  `NOTICE` e `plugin/` permanecem intocados.
 
 ### Identificadores técnicos mantidos (seção 6 da especificação)
 
