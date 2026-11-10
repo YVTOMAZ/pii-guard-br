@@ -1,16 +1,16 @@
 {
   "manifest_version": "0.4",
   "name": "pii-tokens",
-  "display_name": "pii-tokens",
+  "display_name": "Contextuva",
   "version": "0.1.2",
   "icon": "icon.png",
-  "description": "Connects Claude to an MCP server and masks CPF, CNPJ, email, phone and name columns in its results before Claude reads them.",
+  "description": "Connects Claude to an MCP server and masks CPF, CNPJ, email, phone and name columns in its results before Claude reads them. Derived from pii-tokens by Lucas Aguilar (MIT).",
   "author": {
     "name": "Lucas Aguilar"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/oLucasAguilar/pii-tokens"
+    "url": "https://github.com/YVTOMAZ/pii-guard-br"
   },
   "server": {
     "type": "uv",

@@ -279,7 +279,7 @@ if fastmcp:
     check("proxy: a schema keeps its structure and enum values", '{\\"a\\":1}' in tools)
 
     check("proxy: its own note says a value keeps its token across conversations, after the upstream's",
-          "gets the same token" in instructions and instructions.index("<data boundary=") < instructions.index("pii-tokens:"))
+          "gets the same token" in instructions and instructions.index("<data boundary=") < instructions.index("Contextuva:"))
     check("control: a plain proxy has no such note", "gets the same token" not in plain_instructions)
     check("proxy, default settings: the note says a token in a query matches nothing, and to filter by an ID",
           "matches nothing" in instructions and "used as a filter" not in instructions)
@@ -587,6 +587,27 @@ if fastmcp:
     check("auth: a refresh uses the refresh token another process stored", status == 200 and "browser" not in sent)
     status, sent = asyncio.run(shared_store(other_wins_the_race=True))
     check("auth: a refresh lost to another process takes its tokens, no new sign-in", status == 200 and "browser" not in sent)
+
+    import contextlib
+    import io
+
+    buf = io.StringIO()
+    with contextlib.redirect_stderr(buf):
+        server.without_null_text({"x": "null"}, {"properties": {"x": {"type": "integer"}}})
+    stderr_out = buf.getvalue()
+    check("proxy: null-text path logs the [Contextuva] prefix", "[Contextuva]" in stderr_out)
+    check("proxy: null-text path does not log [pii-tokens]", "[pii-tokens]" not in stderr_out)
+
+    async def _refuse_call():
+        try:
+            await server._refuse()
+        except Exception as exc:  # ToolError or any wrapper
+            return str(exc)
+        return ""
+
+    refuse_msg = asyncio.run(_refuse_call())
+    check("proxy: _refuse raises an error mentioning Contextuva", "Contextuva" in refuse_msg)
+    check("proxy: _refuse error does not mention pii-tokens", "pii-tokens" not in refuse_msg)
 
 else:
     print("skip proxy tests: fastmcp missing (desktop/.venv/bin/python tests/test_desktop.py runs them)")

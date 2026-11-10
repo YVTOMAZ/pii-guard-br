@@ -109,3 +109,43 @@ Os registros antigos de 254 OK e 16 FAIL permanecem no histórico da fila;
 a correção de subprocessos por outra missão e os resultados verdes atuais foram
 preservados acima. Nenhuma correção funcional de pseudonimização, migração de
 dados ou etapa B foi incluída nesta mudança de avisos.
+
+## Manutenção: marca Contextuva na extensão desktop (2026-11-09)
+
+Data/hora (BRT): 2026-11-09 (execução registrada nesta rodada).
+
+### Comando executado
+
+```bash
+make test PYTHON=/home/ttechnology/Documentos/melhorar-github/repos/pii-guard-br/.venv/bin/python
+```
+
+### Resultado
+
+- Linha de base (antes das alterações): 355 casos `ok`, 0 `FAIL`, código de saída 0.
+- Após as alterações: 359 casos `ok`, 0 `FAIL`, código de saída 0.
+- Testes unitários de marca (unittest discover): 5 `OK`.
+
+Acréscimo de 4 casos (CA5/CA6) em `tests/test_desktop.py`, cobrindo o `ToolError`
+de `_refuse` e o log de `without_null_text`.
+
+### Verificações de aceite
+
+- CA1: `grep -rn "pii-tokens" desktop/pii_proxy/server.py` retorna apenas
+  `create_proxy(client, name="pii-tokens")` (linha 286).
+- CA2: `grep -rn '\[pii-tokens\]' desktop/` não retorna nada.
+- CA3: `display_name == "Contextuva"`, `name == "pii-tokens"`,
+  `author.name == "Lucas Aguilar"`.
+- CA9: `python3 desktop/build.py /tmp/contextuva-test.mcpb && python3 desktop/build.py --check /tmp/contextuva-test.mcpb`
+  imprime `same code as this folder`.
+- Escopo: `git diff --stat origin/main` mostra 5 arquivos permitidos:
+  `desktop/manifest.json`, `desktop/pii_proxy/server.py`, `docs/configuracao.md`,
+  `docs/resultados-testes.md`, `tests/test_desktop.py`. `.github/`, `README.md`,
+  `NOTICE` e `plugin/` permanecem intocados.
+
+### Identificadores técnicos mantidos (seção 6 da especificação)
+
+`manifest.json` `name`, `version`, `server`, `user_config`; `pyproject.toml` `name`;
+saída `build/pii-tokens.mcpb`; `client_name` OAuth (`auth.py`); `create_proxy(name=)`;
+variáveis `PII_PROXY_*`; caminhos `~/.config/pii-tokens`; serviço de keyring.
+Atribuição MIT a Lucas Aguilar intacta (`author`, `NOTICE`, `LICENSE`).
