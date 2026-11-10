@@ -46,3 +46,9 @@ Alterações adicionais do derivado Contextuva (2026-11-07):
 - Prefixos dos avisos de hooks, CLI, keyring e instalação atualizados para Contextuva.
 - Contratos de hooks, comandos e persistência legada preservados.
 - Testes de regressão de mensagens incluídos no alvo make test.
+
+Modificações registradas nesta missão (community-health, 2026-11-09):
+- Adição de arquivos de saúde da comunidade (CONTRIBUTING.md, SECURITY.md,
+  CODE_OF_CONDUCT.md, .github/ISSUE_TEMPLATE/*, .github/PULL_REQUEST_TEMPLATE.md,
+  SUPPORT.md) e seção de links no README.
+- Nenhuma alteração em LICENSE, lógica de mascaramento, tokens, cofre ou hooks.

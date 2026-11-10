@@ -61,6 +61,13 @@ com LGPD.
 make test
 ```
 
+## Contribuindo / Segurança
+
+- Guia de contribuição: [CONTRIBUTING.md](CONTRIBUTING.md)
+- Código de conduta: [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)
+- Política de segurança: [SECURITY.md](SECURITY.md)
+- Suporte: [SUPPORT.md](SUPPORT.md)
+
 Dados exclusivamente sintéticos. Resultado da última execução local do derivado:
 ver `docs/resultados-testes.md`.
 
