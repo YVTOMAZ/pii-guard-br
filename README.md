@@ -1,5 +1,7 @@
 # Contextuva (nome de trabalho, provisório; slug ASCII `contextuva`)
 
+[![Testes](https://github.com/YVTOMAZ/pii-guard-br/actions/workflows/tests.yml/badge.svg)](https://github.com/YVTOMAZ/pii-guard-br/actions/workflows/tests.yml)
+
 Derivado atribuído de [pii-tokens](https://github.com/oLucasAguilar/pii-tokens)
 (MIT, Copyright (c) 2026 Lucas Aguilar). Preserva avisos MIT e autoria.
 Ver `NOTICE` e `LICENSE`.
