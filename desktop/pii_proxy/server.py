@@ -84,7 +84,7 @@ def own_instructions(unmask_kinds: frozenset, distinct: bool = True) -> str:
     same = ("On this computer and user account the same value gets the same token in every conversation, so tokens can "
             "be counted and compared." if distinct else
             "Here the tokens cannot tell values apart (no system keyring): do not count or compare them.")
-    return ("pii-tokens: personal data in these results (CPF, CNPJ, email, phone, names in query tables) arrives as "
+    return ("Contextuva: personal data in these results (CPF, CNPJ, email, phone, names in query tables) arrives as "
             f"tokens such as CPF#3f1a9c0d22e4. {same} {follow} Do not explain the masking unless the user asks.")
 
 
@@ -155,11 +155,11 @@ def without_null_text(arguments: dict, parameters: dict) -> dict:
             fixed[key] = value
         elif _accepts(schema, "null", definitions) and not _closed_with_null_text(schema, definitions):
             fixed[key] = None
-            print(f"[pii-tokens] argument {key!r} came as the text null: sent as null", file=sys.stderr)
+            print(f"[Contextuva] argument {key!r} came as the text null: sent as null", file=sys.stderr)
         elif key in required or _accepts(schema, "string", definitions):
             fixed[key] = value
         else:
-            print(f"[pii-tokens] argument {key!r} came as the text null: left out", file=sys.stderr)
+            print(f"[Contextuva] argument {key!r} came as the text null: left out", file=sys.stderr)
     return fixed
 
 
@@ -228,7 +228,7 @@ class MaskingMiddleware(Middleware):
             content = [self._masked_block(block) for block in result.content]
             structured = None if result.structured_content is None else self.masker.value(result.structured_content)
         except Exception as e:
-            print(f"[pii-tokens] result withheld: {type(e).__name__}", file=sys.stderr)
+            print(f"[Contextuva] result withheld: {type(e).__name__}", file=sys.stderr)
             raise ToolError("Result withheld: it could not be masked with certainty.") from None
         return ToolResult(content=content, structured_content=structured, meta=None, is_error=result.is_error)
 
@@ -255,7 +255,7 @@ def upstream_transport(settings: Settings) -> StreamableHttpTransport:
 
 
 async def _refuse(*args):
-    raise ToolError("pii-tokens does not forward this request: its text could not be masked.")
+    raise ToolError("Contextuva does not forward this request: its text could not be masked.")
 
 
 async def _ignore_progress(progress, total, message):

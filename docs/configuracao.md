@@ -36,7 +36,19 @@ Variáveis `CLAUDE_PLUGIN_OPTION_<CHAVE>` sobrescrevem o arquivo.
 
 ## Marca dos avisos
 
-Os avisos visíveis de hooks, CLI e instalação usam o prefixo `[Contextuva]`.
+Os avisos visíveis de hooks, CLI, instalação e extensão desktop (proxy MCP) usam o
+prefixo `[Contextuva]`. A nota enviada ao modelo e o `ToolError` do proxy também
+usam `Contextuva` como marca.
+
 Os comandos `pii-*`, o escape `pii-ok`, os eventos e campos de hooks, os caminhos
-legados de configuração/cofre e o serviço de keyring `pii-tokens` permanecem
-compatíveis; a mudança de marca não migra nem recria dados.
+legados de configuração/cofre, o serviço de keyring `pii-tokens`, o `name` do
+manifest da extensão desktop, o `client_name` OAuth, o nome do proxy
+(`create_proxy(..., name="pii-tokens")`), o pacote `pii-tokens-desktop` e o arquivo
+de saída `build/pii-tokens.mcpb` permanecem idênticos por compatibilidade; a
+mudança de marca não migra nem recria dados.
+
+A extensão desktop mantém, por compatibilidade: `manifest.json` `name`
+(`pii-tokens`), `version` e `author` (Lucas Aguilar, MIT). `repository.url`
+passa a apontar para este repositório (`YVTOMAZ/pii-guard-br`) e a
+`description` registra a derivação de `pii-tokens` (Lucas Aguilar, MIT).
+Somente `display_name` muda de marca (`Contextuva`).
