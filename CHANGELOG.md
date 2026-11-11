@@ -7,6 +7,10 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 
 ## [Unreleased]
 
+### Changed
+
+- CI instala as dependências do desktop a partir de `desktop/pyproject.toml`.
+
 ## [0.1.0] - 2026-11-10
 
 Primeira release pública etiquetada do derivado Contextuva
