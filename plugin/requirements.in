@@ -1,0 +1,6 @@
+# Dependências diretas do plugin. Versões fixadas com hashes em requirements.txt.
+# Regenerar: pip-compile --generate-hashes plugin/requirements.in -o plugin/requirements.txt
+cryptography
+keyring
+openpyxl
+pillow
