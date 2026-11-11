@@ -1,6 +1,8 @@
 # Contextuva (nome de trabalho, provisório; slug ASCII `contextuva`)
 
-[![Testes](https://github.com/YVTOMAZ/pii-guard-br/actions/workflows/tests.yml/badge.svg)](https://github.com/YVTOMAZ/pii-guard-br/actions/workflows/tests.yml)
+[![Testes](https://github.com/YVTOMAZ/pii-guard-br/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/YVTOMAZ/pii-guard-br/actions/workflows/tests.yml)
+[![Release](https://img.shields.io/github/v/release/YVTOMAZ/pii-guard-br)](https://github.com/YVTOMAZ/pii-guard-br/releases)
+[![Licença: MIT](https://img.shields.io/github/license/YVTOMAZ/pii-guard-br)](LICENSE)
 
 Derivado atribuído de [pii-tokens](https://github.com/oLucasAguilar/pii-tokens)
 (MIT, Copyright (c) 2026 Lucas Aguilar). Preserva avisos MIT e autoria.
@@ -67,6 +69,7 @@ make test
 - Código de conduta: [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)
 - Política de segurança: [SECURITY.md](SECURITY.md)
 - Suporte: [SUPPORT.md](SUPPORT.md)
+- Registro de mudanças: [CHANGELOG.md](CHANGELOG.md)
 
 Dados exclusivamente sintéticos. Resultado da última execução local do derivado:
 ver `docs/resultados-testes.md`.
