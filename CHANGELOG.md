@@ -7,9 +7,25 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 
 ## [Unreleased]
 
+## [0.1.1] - 2026-11-11
+
 ### Changed
 
-- CI instala as dependências do desktop a partir de `desktop/pyproject.toml`.
+- CI instala as dependências do desktop a partir de `desktop/pyproject.toml`,
+  para que atualizações do Dependabot sejam de fato testadas (#7, `12db3f8`).
+- Desktop: `fastmcp` atualizado de 4.1.4 para 4.1.6 (#1, Dependabot, `5807306`).
+
+### Fixed
+
+- Plugin: adicionado `plugin/requirements.in`, que o cabeçalho de
+  `plugin/requirements.txt` citava como `req.in` inexistente (#6, `055c13a`;
+  fecha #5).
+
+### Notes
+
+- `desktop/pyproject.toml` (`0.1.0`) e `desktop/manifest.json` (`0.1.2`)
+  não foram alterados nesta release; a uniformização de versões fica para
+  tarefa própria.
 
 ## [0.1.0] - 2026-11-10
 
@@ -66,5 +82,6 @@ Este derivado parte de [pii-tokens](https://github.com/oLucasAguilar/pii-tokens)
   rebaixado** para 0.1.0.
 - Não há `plugin.json` neste repositório.
 
-[Unreleased]: https://github.com/YVTOMAZ/pii-guard-br/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/YVTOMAZ/pii-guard-br/compare/v0.1.1...HEAD
+[0.1.1]: https://github.com/YVTOMAZ/pii-guard-br/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/YVTOMAZ/pii-guard-br/releases/tag/v0.1.0
