@@ -1,6 +1,6 @@
 [project]
 name = "pii-tokens-desktop"
-version = "0.1.0"
+version = "0.1.2"
 description = "Claude Desktop extension: an MCP proxy that masks personal data in the upstream server's results."
 requires-python = ">=3.10"
 dependencies = [

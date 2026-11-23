@@ -7,6 +7,15 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 
 ## [Unreleased]
 
+### Changed
+
+- Desktop: `desktop/pyproject.toml` passa a declarar a versão `0.1.2`, a mesma de
+  `desktop/manifest.json` (antes `0.1.0`, herdada do upstream).
+
+### Added
+
+- Teste `tests/test_versions.py`, que falha se as versões do pyproject e do manifest divergirem.
+
 ## [0.1.1] - 2026-11-11
 
 ### Changed
