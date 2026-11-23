@@ -19,6 +19,26 @@ Não afirma superioridade sobre a base. Comparação base/derivado não está in
 nesta entrega; fica como tarefa própria. Resultados da suíte local do derivado:
 ver `docs/resultados-testes.md`.
 
+## Exemplo rápido
+
+Depois da instalação abaixo, a partir da raiz do repositório. Dados 100% sintéticos.
+
+```bash
+printf 'Cliente: Fulana de Tal\nCPF: 291.417.776-38\nE-mail: fulana@empresa.test\nTelefone: (11) 91234-5678\n' > exemplo.txt
+plugin/bin/pii-mask exemplo.txt
+```
+
+```text
+Cliente: Fulana de Tal
+CPF: CPF#67ce50b52876
+E-mail: EMAIL#a6cc9835b589
+Telefone: PHONE#37ad8a434c42
+```
+
+Saída copiada de uma execução real. Os tokens dependem do cofre local e podem
+variar entre instalações. Nomes em texto livre não são mascarados por padrão, e `example.com` e `example.org` ficam de fora de
+propósito. Ver `docs/limites.md`.
+
 ## Instalação (Linux)
 
 Ver `docs/ambiente.md`. Resumo:
